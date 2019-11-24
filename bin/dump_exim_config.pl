@@ -250,6 +250,14 @@ sub dump_exim_file
   if ($exim_conf{'reject_bad_spf'}) {
   	$template->setCondition('REJECTBADSPF', 1);
   }
+  $template->setCondition('REJECTBADSPFBF', 0);
+  if ($exim_conf{'reject_bad_spf_bf'}) {
+        $template->setCondition('REJECTBADSPFBF', 1);
+  }
+  $template->setCondition('REJECTBADSPFRT', 0);
+  if ($exim_conf{'reject_bad_spf_rt'}) {
+        $template->setCondition('REJECTBADSPFRT', 1);
+  }
   $template->setCondition('REJECTBADRDNS', 0);
   if ($exim_conf{'reject_bad_rdns'}) {
     $template->setCondition('REJECTBADRDNS', 1);
@@ -796,6 +804,8 @@ sub get_exim_config{
         $config{'mask_relayed_ip'} = $row{'mask_relayed_ip'};
         $config{'masquerade_outgoing_helo'} = $row{'masquerade_outgoing_helo'};
         $config{'reject_bad_spf'} = $row{'reject_bad_spf'};
+        $config{'reject_bad_spf_bf'} = $row{'reject_bad_spf_bf'};
+        $config{'reject_bad_spf_rt'} = $row{'reject_bad_spf_rt'
         $config{'reject_bad_rdns'} = $row{'reject_bad_rdns'};
         $config{'dmarc_follow_reject_policy'} = $row{'dmarc_follow_reject_policy'};
         $config{'dmarc_enable_reports'} = $row{'dmarc_enable_reports'};

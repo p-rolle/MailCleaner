@@ -214,9 +214,10 @@ sub get_sa_config
   my %config;
   
   my %row = $db->getHashRow("SELECT use_bayes, bayes_autolearn, ok_languages, ok_locales, use_rbls, rbls_timeout, use_dcc, 
-				dcc_timeout, use_razor, razor_timeout, use_pyzor, pyzor_timeout, trusted_ips, sa_rbls,
-				spf_timeout, use_spf, dkim_timeout, use_dkim, dmarc_follow_quarantine_policy, 
-				use_fuzzyocr, use_imageinfo, use_pdfinfo, use_botnet FROM antispam WHERE set_id=1");
+                                dcc_timeout, use_razor, razor_timeout, use_pyzor, pyzor_timeout, trusted_ips, sa_rbls,
+                                spf_timeout, spf_timeout_bf, spt_timeout_rt, use_spf, use_spf_bf, use_spf_rt, dkim_timeout,
+                                use_dkim, dmarc_follow_quarantine_policy, 
+                                use_fuzzyocr, use_imageinfo, use_pdfinfo, use_botnet FROM antispam WHERE set_id=1");
   return unless %row;
   
   $config{'__USE_BAYES__'} = $row{'use_bayes'};
@@ -243,7 +244,11 @@ sub get_sa_config
   $config{'__SA_RBLS__'} = $row{'sa_rbls'};
   
   $config{'__USE_SPF__'} = $row{'use_spf'};
+  $config{'__USE_SPF_BF__'} = $row{'use_spf_bf'};
+  $config{'__USE_SPF_RT__'} = $row{'use_spf_rt'}
   $config{'__SPF_TIMEOUT__'} = $row{'spf_timeout'};
+  $config{'__SPF_TIMEOUT_BF__'} = $row{'spf_timeout_bf'};
+  $config{'__SPF_TIMEOUT_RF__'} = $row{'spf_timeout_rt'};
   $config{'__USE_DKIM__'} = $row{'use_dkim'};
   $config{'__DKIM_TIMEOUT__'} = $row{'dkim_timeout'};
   $config{'__USE_FUZZYOCR__'} = $row{'use_fuzzyocr'};
@@ -347,6 +352,8 @@ sub dump_sa_file
                           'share/spamassassin/70_mc_spf_scores.cf_template',
                           'share/spamassassin/70_mc_spf_scores.cf');
   $template->setCondition('__USE_SPF__', $sa_conf{'__USE_SPF__'});
+  $template->setCondition('__USE_SPF_BF__', $sa_conf{'__USE_SPF_BF__'});
+  $template->setCondition('__USE_SPF_RT__', $sa_conf{'__USE_SPF_RT__'});
   return 0 unless $template->dump();
 
   $template = ConfigTemplate::create(
@@ -466,6 +473,8 @@ sub dump_saplugins_conf
           '__IF_DKIM__' => getModuleStatus('__USE_DKIM__'),
           '__IF_URIDNSBL__' => getModuleStatus('__USE_RBLS__'),
           '__IF_SPF__' => getModuleStatus('__USE_SPF__'),
+          '__IF_SPF_BF__' => getModuleStatus('__USE_SPF_BF__'),
+          '__IF_SPF_RT__' => getModuleStatus('__USE_SPF_RT__'),
           '__IF_FUZZYOCR__' => getModuleStatus('__USE_FUZZYOCR__'),
           '__IF_OSCAR__' => getModuleStatus('__USE_FUZZYOCR__'),
           '__IF_PDFINFO__' => getModuleStatus('__USE_PDFINFO__'),

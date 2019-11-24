@@ -85,21 +85,14 @@ class Default_Form_AntiSpam_Spamc extends Default_Form_AntiSpam_Default
 	       $this->addElement($el);
 		$i++;
 	    }
-	    /*
-	    $netchecks = array(
-	    	'use_rbls' => array('label' => 'Enable RBLs controls', 'timeout' => 'rbls_timeout', 'title' => 'Use DNS RBLs for Spam detection'),
-	    	'use_dcc' => array('label' => 'Enable DCC control', 'timeout' => 'dcc_timeout', 'title' => 'The idea of DCC is that if mail recipients could compare the mail they receive, they could recognize unsolicited bulk mail'),
-	    	'use_razor' => array('label' => 'Enable Razor control', 'timeout' => 'razor_timeout', 'title' => 'Vipul's Razor is a distributed, collaborative, spam detection and filtering network'),
-	    	'use_pyzor' => array('label' => 'Enable Pyzor control', 'timeout' => 'pyzor_timeout', 'title' => 'Exatly the same thing than razor. Chose/Select only of one of them'),
-	    	'use_spf' => array('label' => 'Enable SPF control', 'timeout' => 'spf_timeout', 'title' => 'This plugin checks a message against Sender Policy Framework records published by the domain owners in DNS to fight email address forgery and make it easier to identify spams'),
-	    	'use_dkim' => array('label' => 'Enable DKIM control', 'timeout' => 'dkim_timeout', 'title' => 'DomainKeys Identified Mail (DKIM) is a method by which emails are signed by the organisation responsible for the senders domain and are placed in the DKIM-Signature: header field ')
-	    );*/
 		$netchecks = array(
                 'use_rbls' => array('label' => 'Enable RBLs controls', 'timeout' => 'rbls_timeout', 'title' => "Use DNS RBLs for Spam detection"),
                 'use_dcc' => array('label' => 'Enable DCC control', 'timeout' => 'dcc_timeout', 'title' => "The idea of DCC is that if mail recipients could compare the mail they receive, they could recognize unsolicited bulk mail"),
                 'use_razor' => array('label' => 'Enable Razor control', 'timeout' => 'razor_timeout', 'title' => "Vipul's Razor is a distributed, collaborative, spam detection and filtering network"),
                 'use_pyzor' => array('label' => 'Enable Pyzor control', 'timeout' => 'pyzor_timeout', 'title' => "Exatly the same thing than razor. Chose/Select only one of them"),
-                'use_spf' => array('label' => 'Enable SPF control', 'timeout' => 'spf_timeout', 'title' => "This plugin checks a message against Sender Policy Framework records published by the domain owners in DNS to fight email address forgery and make it easier to identify spams"),
+		'use_spf' => array('label' => 'Enable SPF control', 'timeout' => 'spf_timeout', 'title' => "This plugin checks a message against Sender Policy Framework records published by the domain owners in DNS to fight email address forgery and make it easier to identify spams"),
+                'use_spf_bf' => array('label' => 'Enable SPF control (BodyFrom)', 'timeout' => 'spf_timeout_bf', 'title' => "This plugin checks the BodyFrom address of a message against Sender Policy Framework records published by the domain owners in DNS to fight email address forgery and make it easier to identify spams"),
+                'use_spf_rt' => array('label' => 'Enable SPF control (Reply-To)', 'timeout' => 'spf_timeout_rt', 'title' => "This plugin checks the Reply-To address of a message against Sender Policy Framework records published by the domain owners in DNS to fight email address forgery and make it easier to identify spams"),
                 'use_dkim' => array('label' => 'Enable DKIM control', 'timeout' => 'dkim_timeout', 'title' => "DomainKeys Identified Mail (DKIM) is a method by which emails are signed by the organisation responsible for the senders domain and are placed in the DKIM-Signature: header field"),
             );
 	    foreach ($netchecks as $checkname => $check) {
@@ -160,7 +153,9 @@ class Default_Form_AntiSpam_Spamc extends Default_Form_AntiSpam_Default
 	    	'use_dcc' => 'dcc_timeout',
 	    	'use_razor' => 'razor_timeout',
 	    	'use_pyzor' => 'pyzor_timeout',
-	    	'use_spf' => 'spf_timeout',
+		'use_spf' => 'spf_timeout',
+                'use_spf_bf' => 'spf_timeout_bf',
+                'use_spf_rt' => 'spf_timeout_rt',
 	    	'use_dkim' => 'dkim_timeout',
 	    ) as $p => $t) {
 			$as->setParam($p, $request->getParam($p));
@@ -180,7 +175,9 @@ class Default_Form_AntiSpam_Spamc extends Default_Form_AntiSpam_Default
 	    	'use_dcc' => 'dcc_timeout',
 	    	'use_razor' => 'razor_timeout',
 	    	'use_pyzor' => 'pyzor_timeout',
-	    	'use_spf' => 'spf_timeout',
+		'use_spf' => 'spf_timeout',
+                'use_spf_bf' => 'spf_timeout_bf',
+                'use_spf_rt' => 'spf_timeout_rt',
 	    	'use_dkim' => 'dkim_timeout',
 		) as $p => $t) {
 			$this->getElement($t)->setValue($as->getParam($t));

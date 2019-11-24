@@ -81,6 +81,8 @@ endif
 
 ifplugin Mail::SpamAssassin::Plugin::SPF
 spf_timeout __SPF_TIMEOUT__
+spf_timeout_bf __SPF_TIMEOUT_BF__
+spf_timeout_rt __SPF_TIMEOUT_RT__
 endif
 
 __IF__ QUARANTINE_DMARC

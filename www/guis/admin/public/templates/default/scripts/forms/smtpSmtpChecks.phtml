@@ -23,8 +23,19 @@
           <tr>
             <td colspan="2"><hr /></td>
           </tr>
-          
-          <?php foreach (array('reject_bad_spf', 'reject_bad_rdns', 'dmarc_follow_reject_policy') as $f) {?>
+          <tr>
+            <td colspan="2" align ="center">Reject wrong SPF (fail result)</td>
+          </tr>
+
+          <?php foreach (array('reject_bad_spf', 'reject_bad_spf_bf', 'reject_bad_spf_rt') as $f) {?>
+           <?php echo $this->InputRow($this->form->getElement($f));?>
+          <?php }?>
+
+           <tr>
+            <td colspan="2"><hr /></td>
+	  </tr>
+
+          <?php foreach (array('reject_bad_rdns', 'dmarc_follow_reject_policy') as $f) {?>
            <?php echo $this->InputRow($this->form->getElement($f));?>
           <?php }?>
           

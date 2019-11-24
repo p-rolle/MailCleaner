@@ -61,8 +61,8 @@ class Default_Form_SmtpChecks extends ZendX_JQuery_Form
         }
         $this->addElement($allowmxtoip);
         
-        $reject_bad_spf = new Zend_Form_Element_Checkbox('reject_bad_spf', array(
-            'label'   => $t->_('Reject wrong SPF (fail result)'). " :",
+	$reject_bad_spf = new Zend_Form_Element_Checkbox('reject_bad_spf', array(
+            'label'   => $t->_('SMTP From'). " :",
             'title' => $t->_("Rejects mails not satisfying the domain's SPF"),
             'uncheckedValue' => "0",
             'checkedValue' => "1"
@@ -70,7 +70,29 @@ class Default_Form_SmtpChecks extends ZendX_JQuery_Form
         if ($this->_mta->getParam('reject_bad_spf') && $this->_mta->getParam('reject_bad_spf') != 'false') {
             $reject_bad_spf->setChecked(true);
         }
-        $this->addElement($reject_bad_spf);
+	$this->addElement($reject_bad_spf);
+
+        $reject_bad_spf_bf = new Zend_Form_Element_Checkbox('reject_bad_spf_bf', array(
+            'label'   => $t->_('BodyFrom'). " :",
+            'title' => $t->_("Rejects mails which have a BodyFrom address not satisfying the domain's SPF"),
+            'uncheckedValue' => "0",
+            'checkedValue' => "1"
+                  ));
+        if ($this->_mta->getParam('reject_bad_spf_bf') && $this->_mta->getParam('reject_bad_spf_bf') != 'false') {
+            $reject_bad_spf_bf->setChecked(true);
+        }
+        $this->addElement($reject_bad_spf_bf);
+
+        $reject_bad_spf_rt = new Zend_Form_Element_Checkbox('reject_bad_spf_rt', array(
+            'label'   => $t->_('Reply-To'). " :",
+            'title' => $t->_("Rejects mails which have a Reply-To address not satisfying the domain's SPF"),
+            'uncheckedValue' => "0",
+            'checkedValue' => "1"
+                  ));
+        if ($this->_mta->getParam('reject_bad_spf_rt') && $this->_mta->getParam('reject_bad_spf_rt') != 'false') {
+            $reject_bad_spf_rt->setChecked(true);
+        }
+        $this->addElement($reject_bad_spf_rt);
         
         $reject_bad_rdns = new Zend_Form_Element_Checkbox('reject_bad_rdns', array(
                     'label'   => $t->_('Reject invalid reverse DNS'). " :",
@@ -219,7 +241,9 @@ class Default_Form_SmtpChecks extends ZendX_JQuery_Form
           $mta->setparam('allow_mx_to_ip', 'true');
         }
 
-        $mta->setparam('reject_bad_spf', $request->getParam('reject_bad_spf'));
+	$mta->setparam('reject_bad_spf', $request->getParam('reject_bad_spf'));
+	$mta->setparam('reject_bad_spf_bf', $request->getParam('reject_bad_spf_bf'));
+        $mta->setparam('reject_bad_spf_rt', $request->getParam('reject_bad_spf_rt'));
         $mta->setparam('reject_bad_rdns', $request->getParam('reject_bad_rdns'));
         $mta->setparam('dmarc_follow_reject_policy', $request->getParam('dmarc_follow_reject_policy'));
         $mta->setparam('dmarc_enable_reports', $request->getParam('dmarc_enable_reports'));

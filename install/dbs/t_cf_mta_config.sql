@@ -69,6 +69,8 @@ CREATE TABLE mta_config (
   dkim_default_selector varchar(255),
   dkim_default_pkey     blob,
   reject_bad_spf        bool NOT NULL DEFAULT '0',
+  reject_bad_spf_bf     bool NOT NULL DEFAULT '0',
+  reject_bad_spf_rt     bool NOT NULL DEFAULT '0',
   reject_bad_rdns       bool NOT NULL DEFAULT '0',
   dmarc_follow_reject_policy   bool NOT NULL DEFAULT '0',
   dmarc_enable_reports  bool NOT NULL DEFAULT '0',

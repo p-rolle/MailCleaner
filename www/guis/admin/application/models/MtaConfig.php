@@ -63,6 +63,8 @@ class Default_Model_MtaConfig
        'dkim_default_pkey' => '',
        'relay_refused_to_domains' => '',
        'reject_bad_spf' => 0,
+       'reject_bad_spf_bf' => 0,
+       'reject_bad_spf_rt' => 0,
        'reject_bad_rdns' => 0,
        'dmarc_follow_reject_policy' => 0,
        'dmarc_enable_reports' => 0

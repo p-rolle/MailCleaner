@@ -86,6 +86,22 @@ $(document).ready(function(){
 			    $("#spf_timeout").attr("disabled", "disabled");
 		 }
 	 });
+
+         $("#use_spf_bf").click(function(event){
+                 if ($("#use_spf_bf").is(':checked')) {
+                        $("#spf_timeout_bf").removeAttr('disabled');
+                 } else {
+                            $("#spf_timeout_bf").attr("disabled", "disabled");
+                 }
+         });
+
+         $("#use_spf_rt").click(function(event){
+                 if ($("#use_spf_rt").is(':checked')) {
+                        $("#spf_timeout_rt").removeAttr('disabled');
+                 } else {
+                            $("#spf_timeout_rt").attr("disabled", "disabled");
+                 }
+         });
 	 
 	 $("#use_dkim").click(function(event){
 		 if ($("#use_dkim").is(':checked')) {

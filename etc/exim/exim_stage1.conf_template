@@ -860,6 +860,39 @@ acl_check_mime:
 
 acl_check_data:
 
+  warn    remove_header       = X-MailCleaner-SPF-Whitelisted : X-MailCleaner-SPF-Reply-To : X-MailCleaner-SPF-BodyFrom
+
+  warn    hosts         = <; NOSPFDMARCHOSTS
+          add_header    = :after_received:X-MailCleaner-SPF-Whitelisted: Yes
+          
+  warn    set acl_m_bdy_spf   = ${run{/usr/bin/spfquery \
+                                -ip "$sender_host_address" \
+                                -sender "${address:$header_from:}" \
+                                }}
+          set acl_m_bdy_spf   = $runrc
+          add_header          = :after_received:X-MailCleaner-SPF-BodyFrom: $runrc
+
+__IF__ REJECTBADSPFBF
+  deny    condition           = ${if ={$acl_m_bdy_spf}{3}}
+          message             = SPF policy prohibits address $sender_host_address to send from ${domain:${address:$header_from:}}
+          logwrite            = SPF BodyFrom ${address:$header_from:} cannot send from $sender_host_address \
+                                ( Mail from $sender_address to $recipients )
+__FI__
+
+  warn    set acl_m_rt_spf    = ${run{/usr/bin/spfquery \
+                                -ip "$sender_host_address" \
+                                -sender "${addresses:$reply_address}" \
+                                }}
+          set acl_m_rt_spf    = $runrc
+          add_header          = :after_received:X-MailCleaner-SPF-Reply-To: $runrc
+
+__IF__ REJECTBADSPFRT
+  deny    condition           = ${if ={$acl_m_rt_spf}{3}}
+          message             = SPF policy prohibits address $sender_host_address to send from ${domain:${addresses:$reply_address}}
+          logwrite            = SPF Reply-To ${addresses:$reply_address} cannot send from $sender_host_address \
+                                ( Mail from $sender_address to $recipients )
+__FI__
+
 __IF__ OUTGOINGVIRUSSCAN
   deny    message =  This message contains malware ($malware_name)
           condition = ${if eq {$acl_c0}{relayed} {1}{0}}
